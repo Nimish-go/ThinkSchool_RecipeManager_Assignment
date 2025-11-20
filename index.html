@@ -1,24 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meal Byte</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>MealByte - Recipes</title>
+
+    <!-- main stylesheet -->
     <link rel="stylesheet" href="assets/stylesheets/main.css">
-    <script src="assets/scripts/index.js"></script>
+
+    <!-- Google fonts used in the design -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Outfit:wght@100..900&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather+Sans:ital,wght@0,300;0,700;1,300&family=Nunito+Sans:wght@300;600&family=Outfit:wght@300;600&family=Quicksand:wght@300;600&display=swap" rel="stylesheet">
+
+    <!-- Requirements reference (uploaded file). Used to design the UI. -->
+    <!-- Requirements file: /mnt/data/full_stack_test.pdf  :contentReference[oaicite:1]{index=1} -->
 </head>
 <body>
+
+    <!-- NAVBAR -->
     <header class="primary-header">
-            <div class="logo">
-                <h2 class="logo-text">MealByte - A Recipe Manager</h2>
-            </div>
+        <h2 class="logo-text">MealByte Recipes</h2>
     </header>
+
     <main class="container">
-        
-        <div id="cards"></div>
+
+        <!-- Title + Search + Filters -->
+        <div class="title-search-filters">
+            <h3 class="title-text">Your Recipes</h3>
+
+            <div class="search-filter-group">
+                <input type="search" class="search" placeholder="Search">
+                <select class="difficulty-filter" aria-label="Filter by difficulty">
+                    <option value="All">Filter By Difficulty</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+
+                <select class="prep-filter" aria-label="Filter by prep time">
+                    <option value="All">Max Prep Time</option>
+                    <option value="10">10 mins</option>
+                    <option value="20">20 mins</option>
+                    <option value="30">30 mins</option>
+                    <option value="60">1 hour</option>
+                </select>
+                <button class="bnt-search"></button>
+            </div>
+        </div>
+
+        <!-- Section Title -->
+        <h4 class="section-title">All Difficulty Recipes</h4>
+
+        <!-- Cards Container -->
+        <div id="cards" class="recipe-grid">
+            <!-- Example recipe card -->
+            <div id="recipe-container"></div>
+
+            <!-- Add another recipe dashed card (opens modal) -->
+            <div class="add-card" role="button" tabindex="0" aria-label="Add recipe" id="open-add">
+                + Add another Recipe
+            </div>
+        </div>
+
+        <!-- Link to the assessment PDF (local path provided) -->
+        <footer class="app-footer">
+
+        </footer>
     </main>
+
+    <!-- ====== MODAL (Add / Edit Form) ====== -->
+    <div id="recipe-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <h2 id="modal-title" class="modal-title">Add Recipe</h2>
+
+            <form class="modal-form" id="recipe-form" autocomplete="off">
+                <label for="title">Title</label>
+                <input id="title" name="title" type="text" placeholder="Recipe title">
+
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Short description"></textarea>
+
+                <label for="ingredients">Ingredients (comma-separated)</label>
+                <textarea id="ingredients" name="ingredients" placeholder="egg, flour, milk"></textarea>
+
+                <label for="steps">Steps</label>
+                <textarea id="steps" name="steps" placeholder="Step 1, Step 2..."></textarea>
+
+                <label for="prep">Prep Time (mins)</label>
+                <input id="prep" name="prep" type="number" min="0" placeholder="e.g. 20">
+
+                <label for="difficulty">Difficulty</label>
+                <select id="difficulty" name="difficulty">
+                    <option value="Easy">Easy</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+
+                <label for="image">Image URL (optional)</label>
+                <input id="image" name="image" type="text" placeholder="https://...">
+
+                <button type="submit" class="modal-save-btn">Save Recipe</button>
+            </form>
+
+            <button class="modal-close-btn" id="modal-close">Close</button>
+        </div>
+    </div>
+
+    <!-- ====== VIEW / EDIT RECIPE MODAL (New Layout) ====== -->
+    <div id="view-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-box view-modal-grid" role="dialog" aria-modal="true" aria-labelledby="view-modal-title">
+
+        <h2 id="view-modal-title" class="modal-title" style="text-align:center; margin-bottom:8px;">Recipe Details</h2>
+
+        <div class="view-grid">
+        <!-- LEFT COLUMN: IMAGE PREVIEW + STEPS -->
+        <div class="view-left">
+            <div class="image-preview-wrap">
+            <img id="view-image-preview" src="assets/images/default.png" alt="Recipe image preview">
+            </div>
+
+            <label class="view-label">Steps</label>
+            <textarea id="view-steps" class="view-steps" disabled placeholder="1: Step one&#10;2: Step two"></textarea>
+        </div>
+
+        <!-- RIGHT COLUMN: FIELDS + FILE UPLOAD -->
+        <div class="view-right">
+            <label class="view-label">Title</label>
+            <input id="view-title" type="text" class="view-input" disabled>
+
+            <label class="view-label">Description</label>
+            <textarea id="view-description" class="view-input" disabled></textarea>
+
+            <label class="view-label">Max Prep Time</label>
+            <input id="view-prep" type="text" class="view-input" disabled>
+
+            <label class="view-label">Difficulty</label>
+            <select id="view-difficulty" class="view-input" disabled>
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+            </select>
+
+            <label class="view-label">Upload New Image</label>
+            <input id="view-image-file" type="file" accept="image/*" class="view-file-input" disabled>
+
+            <!-- space filler -->
+            <div style="height:8px"></div>
+        </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="view-actions">
+        <button id="view-edit-btn" class="btn btn-primary">Edit</button>
+        <button id="view-save-btn" class="btn btn-primary" style="display:none;">Save</button>
+        <button id="view-close-btn" class="btn btn-secondary">Close</button>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div id="delete-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-box delete-modal-box">
+            <h3>Delete this recipe?</h3>
+            <p>This action cannot be undone.</p>
+
+            <div class="delete-actions">
+                <button id="confirm-delete" class="confirm-btn">Yes, Delete</button>
+                <button id="cancel-delete" class="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast">Recipe deleted!</div>
+
+
+    <!-- Footer link to your uploaded assessment file (local path) -->
+    <footer style="display:none;">
+    <a href="/mnt/data/full_stack_test.pdf" target="_blank" rel="noopener">Requirements PDF</a>
+    </footer>
+
+    <!-- Minimal JS for modal open/close (keeps UI accessible) -->
+    <script src="assets/scripts/index.js"></script>
 </body>
 </html>

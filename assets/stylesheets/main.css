@@ -1,30 +1,655 @@
-*{
+/* Reset */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-
-
-.primary-header{
-    max-width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    background: #4c9085;
-    padding: 10px;
-    font-family: "Quicksand", sans-serif;
-    top: 0;
-    position: sticky;
-    opacity: 0.9;
+/* Base & fonts */
+body {
+    background: #aad2ba;
+    color: #222;
+    font-family: "Outfit", "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
 }
 
-.logo{
-    color: #e6e6e6;
-    font-weight: 300;
+/* Container */
+.container {
+    width: 92%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 0 80px;
 }
 
-.container{
-    max-width: 100%;
+/* ---------------- NAVBAR ---------------- */
+.primary-header {
     width: 100%;
+    background: #6c757d; /* chosen color */
+    padding: 20px 20px;
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+.logo-text {
+    color: #fff;
+    font-size: 1.6rem;
+    font-family: "Lora", serif;
+    letter-spacing: 1px;
+}
+
+/* Title + search group */
+.title-search-filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-top: 26px;
+    flex-wrap: wrap;
+}
+
+/* Page title center */
+.title-text {
+    width: 100%;
+    text-align: center;
+    font-family: "Lora", serif;
+    font-size: 1.9rem;
+    margin-bottom: 6px;
+}
+
+/* Search & filters group layout */
+.search-filter-group {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+/* Search input (wide with icon on left) */
+.search {
+    width: 520px;
+    max-width: 78vw;
+    height: 48px;
+    border-radius: 12px;
+    border: none;
+    background: white;
+    padding-left: 48px;
+    padding-right: 18px;
+    font-size: 1rem;
+    box-shadow: 0px 6px 18px rgba(0,0,0,0.08);
+    background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: 16px center;
+}
+
+/* Difficulty & prep filters */
+.difficulty-filter,
+.prep-filter {
+    width: 200px;
+    height: 44px;
+    border-radius: 12px;
+    background: white;
+    border: none;
+    padding: 0 12px;
+    box-shadow: 0px 6px 18px rgba(0,0,0,0.06);
+    font-size: 0.95rem;
+}
+
+/* Section title */
+.section-title {
+    margin-top: 30px;
+    font-family: "Lora", serif;
+    font-size: 1.4rem;
+    text-align: center;
+    color: #222;
+}
+
+/* ---------------- RECIPE GRID ---------------- */
+/* Use flex layout to match screenshot spacing */
+.recipe-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 36px;
+    flex-wrap: wrap;
     position: relative;
 }
+
+/* Recipe card placeholder (rounded with large shadow) */
+.recipe-card {
+    width: 400px;
+    height: 170px;
+    background: #e6e6e6;
+    border-radius: 14px;
+    gap: 10px;
+    box-shadow: 0 10px 18px rgba(0,0,0,0.18);
+    flex-shrink: 0;
+}
+
+/* ============================
+   Recipe Card (New UI)
+============================ */
+#cards{
+    display: flex;
+}
+
+#recipe-container {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 30px;
+}
+
+.recipe-card-ui {
+    width: 290px;
+    border-radius: 18px;
+    background: #52796f;
+    color: white;
+    overflow: hidden;
+    box-shadow: 0px 10px 20px rgba(0,0,0,0.15);
+    position: relative;
+    transition: 0.3s ease;
+}
+
+.recipe-card-ui:hover {
+    transform: translateY(-5px);
+}
+
+/* Image Section */
+.recipe-img {
+    width: 100%;
+    height: 140px;
+    background: white;
+}
+.recipe-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Info Section */
+.recipe-info {
+    padding: 14px 16px 18px;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
+
+.recipe-container-actions{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.recipe-actions {
+    margin-top: 10px;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+
+.recipe-info {
+    padding: 14px 16px 18px;
+    position: relative; /* anchor for absolute children */
+    height: 195px;  /* ensures enough vertical space */
+}
+
+/* DELETE BUTTON — bottom-left anchored */
+.delete-recipe-btn {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    padding: 13px;
+    border: none;
+    background: #c93a43;
+    color: #f7f7f7;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+
+
+/* HOVER */
+.delete-recipe-btn:hover {
+    background: #c1121f;
+    color: #e5e5e5;
+}
+
+
+.recipe-title {
+    font-family: "Lora", serif;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.recipe-prep {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+/* Read More link */
+.read-more {
+    font-size: 0.95rem;
+    color: white;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Difficulty Chip */
+.difficulty-chip {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    gap: 10px;
+    background: #e7ecef;
+    color: #444;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 0.85rem;
+}
+
+
+
+/* Add new card: dashed border style */
+.add-card {
+    width: 260px;
+    height: 170px;
+    border-radius: 14px;
+    border: 2px dashed #52796f;
+    color: #52796f;
+    display: flex;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+    font-family: "Lora", serif;
+    font-size: 1.25rem;
+    text-align: center;
+    padding: 8px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.add-card:hover{
+    background: #52796f;
+    color: #fff;
+    transition: ease-in 0.2s all;
+}
+
+/* Empty state (hidden by default) */
+.empty-state {
+    display: block;
+    text-align: center;
+    margin-top: 48px;
+    color: #555;
+}
+.empty-state img {
+    width: 140px;
+    margin-bottom: 12px;
+}
+
+/* Footer link to requirements PDF */
+.app-footer {
+    margin-top: 52px;
+    text-align: center;
+}
+.requirements-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+.requirements-link:hover {
+    text-decoration: underline;
+}
+
+/* ---------------- MODAL STYLES (Add / Edit forms) ---------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: none; /* toggled by JS */
+    justify-content: center;
+    align-items: center;
+    z-index: 120;
+    padding: 20px;
+}
+
+.modal-box {
+    background: #fff;
+    width: 92%;
+    max-width: 640px;
+    border-radius: 16px;
+    padding: 26px 28px;
+    box-shadow: 0 12px 34px rgba(0,0,0,0.28);
+    animation: modalIn 200ms ease-out;
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: translateY(-8px) scale(0.99); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-title {
+    text-align: center;
+    font-family: "Lora", serif;
+    color: #4C9085;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+}
+
+/* Modal form controls */
+.modal-form {
+    display: grid;
+    font-family: "Lora", serif;
+    gap: 10px;
+}
+.modal-form label{
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: 8px;
+}
+.modal-form input,
+.modal-form textarea,
+.modal-form select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #cfcfcf;
+    font-size: 0.98rem;
+    background: #fff;
+    resize: vertical;
+}
+.modal-form textarea {
+    min-height: 100px;
+}
+
+/* Modal action buttons */
+.modal-save-btn {
+    margin-top: 6px;
+    width: 100%;
+    background: #4C9085;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.modal-save-btn:hover { opacity: 0.95; }
+
+.modal-close-btn {
+    margin-top: 8px;
+    width: 100%;
+    background: #d9534f;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 900px) {
+    .search { width: 420px; }
+    .add-card, .recipe-card { width: 300px; }
+}
+
+@media (max-width: 700px) {
+    .title-search-filters { gap: 12px; padding: 0 12px; }
+    .search { width: 100%; max-width: 100%; box-sizing: border-box; }
+    .difficulty-filter, .prep-filter { width: 45%; min-width: 140px; }
+    .recipe-grid { justify-content: center; gap: 22px; }
+    .add-card, .recipe-card { width: 86%; max-width: 420px; height: 160px; }
+    .modal-box { max-width: 92%; padding: 18px; }
+}
+
+/** modal auto scrolling and prevent background scrolling while modal is open */
+/* Make modal content scroll inside the box */
+.modal-box {
+    max-height: 90vh;        /* Prevent modal from exceeding viewport */
+    overflow-y: auto;        /* Enable scroll INSIDE the modal */
+}
+
+/* Add padding to avoid text touching top */
+.modal-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-box::-webkit-scrollbar-thumb {
+    background: #bbbbbb;
+    border-radius: 10px;
+}
+
+.modal-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+/* ---------------- VIEW/EDIT MODAL LAYOUT ---------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;               /* toggled by JS */
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.55);
+  z-index: 150;
+  padding: 18px;
+}
+
+.modal-box.view-modal-grid {
+    width: 92%;
+    max-width: 980px;
+    border-radius: 8px;
+    padding: 18px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.28);
+    background: #f0f0f0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/* grid: left (image+steps)  and right (fields) */
+.view-grid {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 18px;
+    align-items: start;
+}
+
+/* left column */
+.view-left {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* image preview */
+.image-preview-wrap {
+  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px;
+}
+
+.image-preview-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+/* Steps textarea */
+.view-steps {
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid #d0d0d0;
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+/* right column */
+.view-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* labels + inputs */
+.view-label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+  color: #222;
+}
+.view-input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #cfcfcf;
+  background: #fff;
+  font-size: 0.95rem;
+}
+
+/* textarea same as input styling when used on right */
+.view-right textarea.view-input {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* file input */
+.view-file-input {
+  padding: 8px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #dcdcdc;
+}
+
+/* action buttons */
+.view-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* simple button styles */
+.btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-primary {
+  background: #4C9085;
+  color: white;
+}
+.btn-secondary {
+  background: #d9534f;
+  color: white;
+}
+
+/* disabled fields appearance */
+.view-form input[disabled],
+.view-form textarea[disabled],
+.view-form select[disabled] {
+  background: #f8f8f8;
+  color: #333;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .view-grid { grid-template-columns: 1fr; }
+  .image-preview-wrap { min-height: 180px; }
+  .view-steps { min-height: 160px; }
+}
+
+
+/* DELETE MODAL */
+.delete-modal-box {
+    max-width: 350px;
+    text-align: center;
+}
+
+/* Buttons in delete modal */
+.delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.confirm-btn {
+    padding: 10px 18px;
+    background: red;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    padding: 10px 18px;
+    background: #ccc;
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* FADE-OUT ANIMATION */
+.fade-out {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.35s ease;
+}
+
+/* TOAST */
+#toast {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #333;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s ease;
+}
+
+#toast.show {
+    opacity: 1;
+    transform: translateY(-10px);
+}
+
 
