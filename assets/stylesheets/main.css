@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.primary-header{
+    max-width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    background: #4c9085;
+    padding: 10px;
+    font-family: "Quicksand", sans-serif;
+    top: 0;
+    position: sticky;
+    opacity: 0.9;
+}
+
+.logo{
+    color: #e6e6e6;
+    font-weight: 300;
+}
+
+.container{
+    max-width: 100%;
+    width: 100%;
+    position: relative;
+}
+
