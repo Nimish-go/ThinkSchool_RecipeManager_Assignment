@@ -108,15 +108,20 @@ function loadLocalStorage(){
     }
 }
 
-function renderRecipes(filter = "All", search = "None") {
+function renderRecipes() {
     let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
     const container = document.getElementById("recipe-container");
-    container.innerHTML = ""; // clear container
+
+    // Keep ONLY the add card
+    const addCard = document.getElementById("open-add");
+
+    container.innerHTML = ""; 
+    container.appendChild(addCard); // make sure add-card stays
 
     recipes.forEach(recipe => {
         const card = document.createElement("div");
         card.classList.add("recipe-card-ui");
-
+        
         card.innerHTML = `
             <div class="recipe-img">
                 <img src="${recipe.image}" alt="${recipe.title}">
@@ -141,13 +146,8 @@ function renderRecipes(filter = "All", search = "None") {
                 </div>
             </div>
         `;
-
-        container.appendChild(card);
+        container.insertBefore(card, addCard); // insert before add card!
     });
-}
-
-function renderOnSearch(search){
-    
 }
 
 /** Add Recipe Modal */
@@ -170,29 +170,29 @@ function showLoadingSpinner() {
 }
 
 /* =====================================
-   ADD MODAL — IMAGE UPLOAD (BASE64)
+ADD MODAL — IMAGE UPLOAD (BASE64)
 ===================================== */
 
-const addImageInput = document.getElementById("image-file");
-const addImagePreview = document.getElementById("add-image-preview");
-let addImageBase64 = "";   // store selected image as Base64
+// const addImageInput = document.getElementById("image-file");
+// const addImagePreview = document.getElementById("add-image-preview");
+// let addImageBase64 = "";   // store selected image as Base64
 
-addImageInput.addEventListener("change", function () {
-    const file = this.files[0];
-    if (!file) return;
+// addImageInput.addEventListener("change", function () {
+//     const file = this.files[0];
+//     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        addImageBase64 = e.target.result; // store Base64
-        addImagePreview.src = addImageBase64;
-    };
-    reader.readAsDataURL(file);
-});
+//     const reader = new FileReader();
+//     reader.onload = function (e) {
+//         addImageBase64 = e.target.result; // store Base64
+//         addImagePreview.src = addImageBase64;
+//     };
+//     reader.readAsDataURL(file);
+// });
 
 addRecipeForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    showLoadingSpinner();
+    showLoadingSpinner(); // spinner starts (5s)
 
     // Form fields
     const title = document.getElementById("title").value.trim();
@@ -201,36 +201,29 @@ addRecipeForm.addEventListener("submit", (event) => {
     const stepsInput = document.getElementById("steps").value.trim();
     const prepTime = document.getElementById("prep").value.trim();
     const difficulty = document.getElementById("difficulty").value;
-    const imageURL = document.getElementById("image").value.trim();
+    const imageURL = document.getElementById("image-url").value.trim();
 
-    console.log(title, description, ingredientsInput, stepsInput, prepTime, difficulty);
-
-    // VALIDATION
     if (!title || !description || !ingredientsInput || !stepsInput || !prepTime) {
         console.error("Error. Input fields are empty.");
         return;
     }
 
-    // Parse ingredients
     const ingredients = ingredientsInput
         .split(",")
         .map(i => i.trim())
-        .filter(i => i !== "");
+        .filter(Boolean);
 
-    // Parse steps into numbered object
     const stepsArr = stepsInput
-        .split(".")
+        .split(/\r?\n/)
         .map(s => s.trim())
-        .filter(s => s !== "");
+        .filter(Boolean);
 
     const stepsObj = {};
     stepsArr.forEach((step, index) => {
         stepsObj[index + 1] = step;
     });
 
-    // FINAL IMAGE:
-    // Priority: Base64 upload > Image URL > default placeholder
-    const finalImage = addImageBase64 || imageURL || "assets/images/default.png";
+    const finalImage = imageURL || "assets/images/default.png";
 
     const newRecipe = {
         id: now(),
@@ -246,30 +239,36 @@ addRecipeForm.addEventListener("submit", (event) => {
     // Save into localStorage
     let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
     recipes.push(newRecipe);
-
     localStorage.setItem("recipes", JSON.stringify(recipes));
 
-    // Re-render
-    renderRecipes();
+    // 🔥 DO EVERYTHING only AFTER 5 seconds (spinner duration)
+    setTimeout(() => {
 
-    // Close modal
-    closeModal();
+        // Re-render list
+        renderRecipes();
 
-    // Reset form fields
-    addRecipeForm.reset();
-    addImagePreview.src = "assets/images/default.png";
-    addImageBase64 = "";
+        // Close modal
+        closeModal();
 
-    console.log("Recipe added successfully!");
+        // Reset form
+        addRecipeForm.reset();
+
+        // Show toast AFTER modal closes
+        showToast("add");
+
+        console.log("Recipe added successfully!");
+
+    }, 5000);  // match spinner duration
 });
+
 
 
 /** View/Edit Modal */
 /* ---------- View/Edit Modal Logic (open, preview file instantly, edit/save) ---------- */
 
 const viewModalEl = document.getElementById('view-modal');
-const viewImagePreview = document.getElementById('view-image-preview');
-const viewImageFileInput = document.getElementById('view-image-file');
+const viewImageURLEl = document.getElementById("view-image-url");
+const viewImagePreview = document.getElementById("view-image-preview");
 
 const viewTitleEl = document.getElementById('view-title');
 const viewDescriptionEl = document.getElementById('view-description');
@@ -289,39 +288,40 @@ let latestPreviewDataUrl = null; // holds the temporary preview data URL
 
 // helper — disable/enable all fields in right & steps
 function toggleViewFields(enable) {
-  viewTitleEl.disabled = !enable;
-  viewDescriptionEl.disabled = !enable;
-  viewIngredientsEl && (viewIngredientsEl.disabled = !enable);
-  viewStepsEl.disabled = !enable;
-  viewPrepEl.disabled = !enable;
-  viewDifficultyEl.disabled = !enable;
-  viewImageFileInput.disabled = !enable;
+    viewTitleEl.disabled = !enable;
+    viewDescriptionEl.disabled = !enable;
+    viewIngredientsEl && (viewIngredientsEl.disabled = !enable);
+    viewStepsEl.disabled = !enable;
+    viewPrepEl.disabled = !enable;
+    viewDifficultyEl.disabled = !enable;
+    viewImageURLEl.disabled = !enable;
+    // viewImageFileInput.disabled = !enable;
 }
 
 // format steps object -> numbered lines "1: text\n2: text"
 function formatStepsForTextarea(stepsObj) {
-  let lines = [];
-  Object.keys(stepsObj).sort((a,b) => Number(a) - Number(b)).forEach(key => {
-    lines.push(`${key}: ${stepsObj[key]}`);
-  });
-  return lines.join('\n');
+    let lines = [];
+    Object.keys(stepsObj).sort((a,b) => Number(a) - Number(b)).forEach(key => {
+        lines.push(`${key}: ${stepsObj[key]}`);
+    });
+    return lines.join('\n');
 }
 
 // parse textarea lines back -> steps object {1: "...", 2: "..."}
 function parseStepsFromTextarea(txt) {
-  const lines = txt.split('\n').map(l => l.trim()).filter(l => l);
-  const stepsObj = {};
-  lines.forEach(line => {
-    const colonIndex = line.indexOf(':');
-    if (colonIndex !== -1) {
-      const numStr = line.substring(0, colonIndex).trim();
-      const rest = line.substring(colonIndex + 1).trim();
-      if (numStr && !isNaN(numStr)) {
-        stepsObj[numStr] = rest;
-      }
-    }
-  });
-  return stepsObj;
+    const lines = txt.split('\n').map(l => l.trim()).filter(l => l);
+    const stepsObj = {};
+    lines.forEach(line => {
+        const colonIndex = line.indexOf(':');
+        if (colonIndex !== -1) {
+        const numStr = line.substring(0, colonIndex).trim();
+        const rest = line.substring(colonIndex + 1).trim();
+        if (numStr && !isNaN(numStr)) {
+            stepsObj[numStr] = rest;
+        }
+        }
+    });
+    return stepsObj;
 }
 
 // open view modal and populate fields
@@ -331,56 +331,60 @@ function openRecipeViewModal(recipeId) {
   if (!recipe) return;
 
   currentRecipeId = recipe.id;
-  latestSelectedFile = null;
   latestPreviewDataUrl = null;
 
-  // fill fields
+  // Fill inputs
   viewTitleEl.value = recipe.title || '';
   viewDescriptionEl.value = recipe.description || '';
-  if (viewIngredientsEl) viewIngredientsEl.value = (Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : (recipe.ingredients || ''));
+  if (viewIngredientsEl)
+      viewIngredientsEl.value = Array.isArray(recipe.ingredients)
+          ? recipe.ingredients.join(', ')
+          : recipe.ingredients || '';
+
   viewStepsEl.value = formatStepsForTextarea(recipe.steps || {});
   viewPrepEl.value = recipe.maxPrepTime || '';
   viewDifficultyEl.value = recipe.difficulty || '';
 
-  // preview image: if we previously used file preview store, use that; otherwise show recipe.image
-  if (recipe.image) {
-    // show the path (if file not actually present it may break on refresh but preview works after upload)
-    viewImagePreview.src = recipe.image;
+  // 🔥 FIXED IMAGE PREVIEW
+  if (recipe.image && recipe.image.trim() !== "") {
+      viewImagePreview.src = recipe.image;
   } else {
-    viewImagePreview.src = 'assets/images/default.png';
+      viewImagePreview.src = "assets/images/default.png";
   }
 
-  // fields initially disabled
-  toggleViewFields(false);
-  viewEditBtn.style.display = 'inline-block';
-  viewSaveBtn.style.display = 'none';
+  // 🔥 FIXED IMAGE URL FIELD
+  document.getElementById("view-image-url").value = recipe.image || "";
 
-  // show modal
-  viewModalEl.style.display = 'flex';
-  viewModalEl.setAttribute('aria-hidden','false');
+  // Disable fields initially
+  toggleViewFields(false);
+  viewEditBtn.style.display = "inline-block";
+  viewSaveBtn.style.display = "none";
+
+  viewModalEl.style.display = "flex";
+  viewModalEl.setAttribute("aria-hidden", "false");
 }
 
-// instant preview when user chooses a file in modal (does not save yet)
-viewImageFileInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+// LIVE UPDATE IMAGE PREVIEW when URL changes
+viewImageURLEl.addEventListener("input", () => {
+    const val = viewImageURLEl.value.trim();
 
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-        latestPreviewDataUrl = evt.target.result; // Base64
-        viewImagePreview.src = latestPreviewDataUrl;
-    };
-    reader.readAsDataURL(file);
+    if (val.length === 0) {
+        viewImagePreview.src = "assets/images/default.png";
+        return;
+    }
+
+    // Try setting preview
+    viewImagePreview.src = val;
 });
 
 
 // Edit button -> enable fields and switch to Save
 viewEditBtn.addEventListener('click', () => {
-  toggleViewFields(true);
-  viewEditBtn.style.display = 'none';
-  viewSaveBtn.style.display = 'inline-block';
-  // focus first field
-  viewTitleEl.focus();
+    toggleViewFields(true);
+    viewEditBtn.style.display = 'none';
+    viewSaveBtn.style.display = 'inline-block';
+    // focus first field
+    viewTitleEl.focus();
 });
 
 // Save button -> write edits back to localStorage and re-render
@@ -391,6 +395,7 @@ viewSaveBtn.addEventListener('click', () => {
     const stepsText = viewStepsEl.value.trim();
     const prep = viewPrepEl.value.trim();
     const difficulty = viewDifficultyEl.value.trim();
+    const imageUrl = viewImageURLEl.value.trim();
 
     if (!title || !stepsText || !prep) {
         alert('Error. Input fields are empty.');
@@ -408,8 +413,8 @@ viewSaveBtn.addEventListener('click', () => {
     let finalImage = recipes[idx].image;
 
     // If user uploaded a new image file → use Base64
-    if (latestPreviewDataUrl) {
-        finalImage = latestPreviewDataUrl;  // Base64 data
+    if (imageUrl) {
+        finalImage = imageUrl;  // Base64 data
     }
 
     // update recipe values
@@ -429,6 +434,8 @@ viewSaveBtn.addEventListener('click', () => {
     // Save back to localStorage
     localStorage.setItem('recipes', JSON.stringify(recipes));
 
+    showLoadingSpinner();
+
     // Update UI
     if (typeof renderRecipes === 'function') renderRecipes();
 
@@ -444,24 +451,24 @@ viewSaveBtn.addEventListener('click', () => {
 
 // close modal
 viewCloseBtn.addEventListener('click', () => {
-  viewModalEl.style.display = 'none';
-  viewModalEl.setAttribute('aria-hidden','true');
+    viewModalEl.style.display = 'none';
+    viewModalEl.setAttribute('aria-hidden','true');
 });
 
 // close on overlay click
 viewModalEl.addEventListener('click', (e) => {
-  if (e.target === viewModalEl) {
-    viewModalEl.style.display = 'none';
-    viewModalEl.setAttribute('aria-hidden','true');
-  }
+    if (e.target === viewModalEl) {
+        viewModalEl.style.display = 'none';
+        viewModalEl.setAttribute('aria-hidden','true');
+    }
 });
 
 // open modal when clicking Read More (delegated)
 document.addEventListener('click', (e) => {
-  if (e.target && e.target.classList && e.target.classList.contains('read-more')) {
-    const id = e.target.getAttribute('data-id');
-    openRecipeViewModal(id);
-  }
+    if (e.target && e.target.classList && e.target.classList.contains('read-more')) {
+        const id = e.target.getAttribute('data-id');
+        openRecipeViewModal(id);
+    }
 });
 
 let deleteRecipeId = null;
@@ -505,13 +512,21 @@ document.getElementById("confirm-delete").addEventListener("click", () => {
     document.getElementById("delete-modal").style.display = "none";
 
     // Show toast
-    showToast();
+    showToast("delete");
 });
 
 // Toast function
-function showToast() {
+function showToast(functionality) {
     const toast = document.getElementById("toast");
     toast.classList.add("show");
+
+    if(functionality === "delete"){
+        toast.textContent = "Recipe Deleted!!";
+    }
+
+    if(functionality === "add"){
+        toast.textContent = "Recipe Added!!";
+    }
 
     setTimeout(() => {
         toast.classList.remove("show");
@@ -519,7 +534,7 @@ function showToast() {
 }
 
 /* ================================
-   SEARCH + FILTER FUNCTIONALITY
+SEARCH + FILTER FUNCTIONALITY
 ================================= */
 
 const searchInput = document.querySelector(".search");
@@ -586,7 +601,7 @@ function applyFilters() {
                 <img src="${recipe.image}" alt="${recipe.title}">
                 <div class="difficulty-container">
                     <span class="chip difficulty-chip" style="
-                        background:${recipe.difficulty === "Easy" ? "#38b000" : recipe.difficulty === "Medium" ? "#eeba0b" : "#ba181b"};
+                        background:${recipe.difficulty === "Easy" ? "#38b000" : recipe.difficulty === "Medium" ? "#e4b61a" : "#ba181b"};
                         color:white;">${recipe.difficulty}</span>
                 </div>
             </div>
@@ -597,7 +612,13 @@ function applyFilters() {
 
                 <div class="recipe-container-actions">
                     <a class="read-more" data-id="${recipe.id}">Read More</a>
-                    <button class="delete-recipe-btn" data-id="${recipe.id}">Delete Recipe</button>
+                    <button class="delete-recipe-btn" data-id="${recipe.id}">
+                        <div class="trash">
+                            <div class="lid"></div>
+                            <div class="bin"></div>
+                        </div>
+                    </button>
+
                 </div>
             </div>
         `;

@@ -30,7 +30,7 @@
             <h3 class="title-text">Your Recipes</h3>
 
             <div class="search-filter-group">
-                <input type="search" class="search" placeholder="Search">
+                <input type="search" class="search" placeholder="Search" autocomplete="recipes">
                 <select class="difficulty-filter" aria-label="Filter by difficulty">
                     <option value="All">Filter By Difficulty</option>
                     <option value="Easy">Easy</option>
@@ -45,23 +45,27 @@
                     <option value="30">30 mins</option>
                     <option value="60">1 hour</option>
                 </select>
-                <button class="bnt-search"></button>
             </div>
         </div>
 
         <!-- Section Title -->
-        <h4 class="section-title">All Recipes</h4>
+        <div class="title-row">
+            <h4 class="section-title">All Recipes</h4>
+        </div>
+
 
         <!-- Cards Container -->
         <div id="cards" class="recipe-grid">
-            <!-- Example recipe card -->
-            <div id="recipe-container"></div>
+            <div id="recipe-container">
 
-            <!-- Add another recipe dashed card (opens modal) -->
-            <div class="add-card" role="button" tabindex="0" aria-label="Add recipe" id="open-add">
-                + Add another Recipe
+                <!-- Add Button MUST be here -->
+                <div class="add-card" id="open-add">
+                    + Add another Recipe
+                </div>
+
             </div>
         </div>
+
 
         <!-- Link to the assessment PDF (local path provided) -->
         <footer class="app-footer">
@@ -97,12 +101,9 @@
                     <option value="Hard">Hard</option>
                 </select>
 
-                <label for="image-file">Upload Image (optional)</label>
-                <input id="image-file" name="image-file" type="file" accept="image/*">
-                <img id="add-image-preview" src="assets/images/default.png" style="width:120px; margin-top:8px; border-radius:8px;">
+                <label for="image-url">Image URL (optional)</label>
+                <input id="image-url" type="text" placeholder="https://example.com/image.jpg">
 
-                <label for="image">Or Paste the Link to the Image</label>
-                <input type="text" id="image" placeholder="https://">
 
                 <button type="submit" class="modal-save-btn">Save Recipe</button>
             </form>
@@ -146,8 +147,9 @@
             <option>Hard</option>
             </select>
 
-            <label class="view-label">Upload New Image</label>
-            <input id="view-image-file" type="file" accept="image/*" class="view-file-input" disabled>
+            <label class="view-label">Image URL</label>
+            <input id="view-image-url" type="text" class="view-input" disabled>
+
 
             <!-- space filler -->
             <div style="height:8px"></div>
@@ -193,7 +195,7 @@
 
 
     <!-- TOAST -->
-    <div id="toast">Recipe deleted!</div>
+    <div id="toast"></div>
 
 
     <!-- Footer link to your uploaded assessment file (local path) -->
