@@ -143,11 +143,26 @@ function renderRecipes() {
                 <div class="recipe-container-actions">
                     <a class="read-more" data-id="${recipe.id}">Read More</a>
                     <button class="delete-recipe-btn" data-id="${recipe.id}" title="Delete Recipe">
-                        <div class="trash">
-                            <div class="lid"></div>
-                            <div class="bin"></div>
-                        </div>
+                        <svg class="trash-svg" width="22" height="30" viewBox="0 0 24 24">
+                            
+                            <!-- LID -->
+                            <path class="trash-lid"
+                                d="M9 4h6v2H9z"
+                                fill="white"/>
+
+                            <!-- Container -->
+                            <path class="trash-body"
+                                d="M5 6h14l-1 14H6L5 6z"
+                                fill="white"/>
+
+                            <!-- Vertical lines -->
+                            <path d="M10 10v6" stroke="#c93a43" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M14 10v6" stroke="#c93a43" stroke-width="2" stroke-linecap="round"/>
+
+                        </svg>
                     </button>
+
+
                 </div>
             </div>
         `;
@@ -670,11 +685,26 @@ function applyFilters() {
                     <a class="read-more" data-id="${recipe.id}">Read More</a>
 
                     <button class="delete-recipe-btn" data-id="${recipe.id}" title="Delete Recipe">
-                        <div class="trash">
-                            <div class="lid"></div>
-                            <div class="bin"></div>
-                        </div>
+                        <svg class="trash-svg" width="22" height="30" viewBox="0 0 24 24">
+                            
+                            <!-- LID -->
+                            <path class="trash-lid"
+                                d="M9 4h6v2H9z"
+                                fill="white"/>
+
+                            <!-- Container -->
+                            <path class="trash-body"
+                                d="M5 6h14l-1 14H6L5 6z"
+                                fill="white"/>
+
+                            <!-- Vertical lines -->
+                            <path d="M10 10v6" stroke="#c93a43" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M14 10v6" stroke="#c93a43" stroke-width="2" stroke-linecap="round"/>
+
+                        </svg>
                     </button>
+
+
                 </div>
             </div>
         `;
