@@ -3,7 +3,6 @@
 **A clean, responsive Recipe Manager Web App built with HTML, CSS, and JavaScript, storing all data in the browser using localStorage.**
 
 ## 📁 Project Structure
-<details> <summary><strong>Click to expand</strong> 📂</summary>
 ```
 MealByte-Recipe-Manager/
 │
@@ -25,12 +24,10 @@ MealByte-Recipe-Manager/
 │       └── main.css           # Full styling (layout, animations, components)
 │
 ```
-</details>
 
 ## ✨Features
 
 **📝Add Recipes**
-<details> <summary><strong>Click to expand</strong></summary>
 - Add title, description, ingredients, steps, prep time, difficulty & image URL
 
 - Simulated 5-second loading animation (“Cooking your recipe…”)
