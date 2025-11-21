@@ -438,6 +438,15 @@ body {
     font-size: 0.95rem;
 }
 
+.error-msg {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: -4px;
+    margin-bottom: 6px;
+    display: block;
+}
+
+
 /** modal auto scrolling and prevent background scrolling while modal is open */
 /* Make modal content scroll inside the box */
 .modal-box {

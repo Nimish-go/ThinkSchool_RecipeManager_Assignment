@@ -189,19 +189,64 @@ ADD MODAL — IMAGE UPLOAD (BASE64)
 //     reader.readAsDataURL(file);
 // });
 
+/** Showing Error Messages if input is null */
+
+function clearErrors() {
+    document.querySelectorAll(".error-msg").forEach(e => e.textContent = "");
+}
+
+function showError(id, msg) {
+    document.getElementById(id).textContent = msg;
+}
+
+document.querySelectorAll("#recipe-form input, #recipe-form textarea").forEach(field => {
+    field.addEventListener("input", () => {
+        const errId = "err-" + field.id;
+        document.getElementById(errId).textContent = "";
+    });
+});
+
+
+
 addRecipeForm.addEventListener("submit", (event) => {
     event.preventDefault();
+    clearErrors();
 
-    showLoadingSpinner(); // spinner starts (5s)
+    let hasError = false;
 
-    // Form fields
     const title = document.getElementById("title").value.trim();
     const description = document.getElementById("description").value.trim();
     const ingredientsInput = document.getElementById("ingredients").value.trim();
     const stepsInput = document.getElementById("steps").value.trim();
-    const prepTime = document.getElementById("prep").value.trim();
     const difficulty = document.getElementById("difficulty").value;
+    const prepTime = document.getElementById("prep").value.trim();
     const imageURL = document.getElementById("image-url").value.trim();
+
+    if (!title) {
+        showError("err-title", "Please enter a recipe title.");
+        hasError = true;
+    }
+    if (!description) {
+        showError("err-description", "Please enter a description.");
+        hasError = true;
+    }
+    if (!ingredientsInput) {
+        showError("err-ingredients", "Please add at least one ingredient.");
+        hasError = true;
+    }
+    if (!stepsInput) {
+        showError("err-steps", "Please add at least one step.");
+        hasError = true;
+    }
+    if (!prepTime) {
+        showError("err-prep", "Please enter a prep time.");
+        hasError = true;
+    }
+
+    // STOP if any errors exist
+    if (hasError) return;
+
+    showLoadingSpinner(); // spinner starts (5s)
 
     if (!title || !description || !ingredientsInput || !stepsInput || !prepTime) {
         console.error("Error. Input fields are empty.");

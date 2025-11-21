@@ -81,18 +81,23 @@
             <form class="modal-form" id="recipe-form" autocomplete="off">
                 <label for="title">Title</label>
                 <input id="title" name="title" type="text" placeholder="Recipe title">
+                <span class="error-msg" id="err-title"></span>
 
                 <label for="description">Description</label>
                 <textarea id="description" name="description" placeholder="Short description"></textarea>
+                <span class="error-msg" id="err-description"></span>
 
                 <label for="ingredients">Ingredients (comma-separated)</label>
                 <textarea id="ingredients" name="ingredients" placeholder="egg, flour, milk"></textarea>
+                <span class="error-msg" id="err-ingredients"></span>
 
-                <label for="steps">Steps</label>
+                <label for="steps">Steps (one per lne)</label>
                 <textarea id="steps" name="steps" placeholder="Step 1, Step 2..."></textarea>
+                <span class="error-msg" id="err-steps"></span>
 
                 <label for="prep">Prep Time (mins)</label>
                 <input id="prep" name="prep" type="number" min="0" placeholder="e.g. 20">
+                <span class="error-msg" id="err-prep"></span>
 
                 <label for="difficulty">Difficulty</label>
                 <select id="difficulty" name="difficulty">
