@@ -1,8 +1,9 @@
-## MealByte — Your Personal Kitchen Companion
+## 📖 MealByte — Your Personal Kitchen Companion
 
-# A clean, responsive Recipe Manager Web App built with HTML, CSS, and JavaScript, storing all data in the browser using localStorage.
+**A clean, responsive Recipe Manager Web App built with HTML, CSS, and JavaScript, storing all data in the browser using localStorage.**
 
 ## 📁 Project Structure
+<details> <summary><strong>Click to expand</strong> 📂</summary>
 ```
 MealByte-Recipe-Manager/
 │
@@ -23,13 +24,13 @@ MealByte-Recipe-Manager/
 │   └── stylesheets/
 │       └── main.css           # Full styling (layout, animations, components)
 │
-
 ```
+</details>
 
-## Features
+## ✨Features
 
-# Add Recipes
-
+**📝Add Recipes**
+<details> <summary><strong>Click to expand</strong></summary>
 - Add title, description, ingredients, steps, prep time, difficulty & image URL
 
 - Simulated 5-second loading animation (“Cooking your recipe…”)
@@ -42,13 +43,13 @@ MealByte-Recipe-Manager/
 
 - Numbered steps rendered in structured format
 
-# Edit Recipes
+**✏️Edit Recipes**
 
 - "Edit" → unlocks all fields
 
 - "Save" updates the recipe instantly in localStorage
 
-# Delete Recipes
+**🗑️Delete Recipes**
 
 - Animate-on-hover trash-bin icon
 
@@ -56,7 +57,7 @@ MealByte-Recipe-Manager/
 
 - Fade-out animation + toast message
 
-# Search & Filter
+**🔍Search & Filter**
 
 - Live search across title, ingredients & description
 
@@ -66,16 +67,17 @@ MealByte-Recipe-Manager/
 
     * Maximum Prep Time (10, 20, 30, 60 mins)
 
-# Responsive Card Grid
+**🧩Responsive Card Grid**
 
 - Auto-fitting grid layout
 
 - Add-recipe card stays aligned properly
 
 - Works on all screen sizes
+</details>
 
-## Getting Started / How to Use?
-
+## 🚀 Getting Started / How to Use?
+<details> <summary><strong>Click to expand</strong></summary>
 1. Navigate to <a href="https://nimish-go.github.io/ThinkSchool_RecipeManager_Assignment/">Here</a>.
 
 2. In the Homepage, you will see three preloaded recipes to show how will the recipes look after adding to the "localStorage".
@@ -116,9 +118,10 @@ MealByte-Recipe-Manager/
     - Click on the dropdown filter of *Filter By Difficulty* or *Max Prep Time*. You can  also filter recipes by selecting filter from both filters.
 
     - The *Filtered Recipe* will rendered.
+</details>
 
-
-## Data Structure in localStorage
+<details><summary><strong>Click to Expand</strong></summary>
+##🗂️Data Structure in localStorage
 The recipes that are loaded on the Homepage are stored in "localStorage" under the key:
 ```
 recipes
@@ -145,8 +148,10 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
     "maxPrepTime": "15 mins"
 }
 ```
+</details>
 
-### Notes
+<details><summary><strong>Click to Expand</strong></summary>
+### 📝Notes
 - An *image* has to be an **URL**.
 
 - *Steps* is numbered Object such as:
@@ -160,8 +165,10 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
 - *Id* is auto-generated.
 
 - Editing a Recipe, updates the existing recipe.
+</details>
 
-## Assumptions & Limitations
+<details><summary><strong>Click to Expand</strong></summary>
+## ⚙️Assumptions & Limitations
 
 - The app is offline-first.
 
@@ -174,8 +181,10 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
 - User is expected to input a valid image URL.
 
 - Grid automatically adjusts based on number of recipes.
+</details>
 
-## Known Issues / Limitations
+<details><summary><strong>Click to Expand</strong></summary>
+## 🐞Known Issues / Limitations
 
 **No validation for broken image URLs**
 
@@ -202,3 +211,4 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
     2: step
     3: step
     ```
+</details>
