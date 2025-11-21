@@ -751,34 +751,286 @@ body.modal-open {
 }
 
 /* ---------------- RESPONSIVE ---------------- */
+
+/* Tablet & Medium Screens */
 @media (max-width: 900px) {
-    .search { width: 420px; }
-    .add-card, .recipe-card { width: 300px; }
+  .container {
+    width: 95%;
+    padding: 20px 0 60px;
+  }
+  
+  .logo-text {
+    font-size: 1.4rem;
+  }
+  
+  .title-text {
+    font-size: 1.6rem;
+  }
+  
+  .search {
+    width: 420px;
+  }
+  
+  .recipe-card-ui {
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  .add-card {
+    width: 100%;
+    max-width: 320px;
+  }
+  
+  .title-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+  
+  .section-title {
+    font-size: 1.2rem;
+  }
 }
 
+/* Mobile Landscape & Small Tablets */
 @media (max-width: 700px) {
-    .title-search-filters { gap: 12px; padding: 0 12px; }
-    .search { width: 100%; max-width: 100%; box-sizing: border-box; }
-    .difficulty-filter, .prep-filter { width: 45%; min-width: 140px; }
-    .recipe-grid { justify-content: center; gap: 22px; }
-    .add-card, .recipe-card { width: 86%; max-width: 420px; height: 100px; justify-content: center; margin-top: 1rem; }
-    .modal-box { max-width: 92%; padding: 18px; }
-    .title-row { flex-direction: column; gap: 12px; }
-    .add-card-top { width: 30%;text-align: center; }
-    .search-filter-group { display: block; justify-content: center; align-items: center; }
-
+  .primary-header {
+    padding: 16px 16px;
+  }
+  
+  .logo-text {
+    font-size: 1.3rem;
+  }
+  
+  .title-search-filters {
+    gap: 12px;
+    padding: 0 12px;
+    flex-direction: column;
+  }
+  
+  .title-text {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+  
+  .search-filter-group {
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .search {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .difficulty-filter, .prep-filter {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  #recipe-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 24px;
+  }
+  
+  .recipe-card-ui {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  
+  .add-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    margin-top: 0;
+  }
+  
+  .recipe-info {
+    height: auto;
+    min-height: 195px;
+  }
+  
+  .modal-box {
+    max-width: 95%;
+    padding: 20px 16px;
+  }
+  
+  .modal-title {
+    font-size: 1.3rem;
+  }
+  
+  .title-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .add-card-top {
+    width: 100%;
+    text-align: center;
+    padding: 12px 20px;
+  }
 }
 
-@media (max-width: 900px) {
-    .title-row {
-        flex-direction: column;
-        gap: 14px;
-    }
+/* Mobile Portrait */
+@media (max-width: 480px) {
+  .container {
+    width: 96%;
+    padding: 16px 0 50px;
+  }
+  
+  .primary-header {
+    padding: 14px 12px;
+  }
+  
+  .logo-text {
+    font-size: 1.2rem;
+  }
+  
+  .title-text {
+    font-size: 1.3rem;
+  }
+  
+  .section-title {
+    font-size: 1.1rem;
+    margin-top: 24px;
+  }
+  
+  .search {
+    height: 44px;
+    font-size: 0.95rem;
+    padding-left: 44px;
+  }
+  
+  .difficulty-filter, .prep-filter {
+    height: 42px;
+    font-size: 0.9rem;
+  }
+  
+  .recipe-card-ui {
+    border-radius: 14px;
+  }
+  
+  .recipe-img {
+    height: 120px;
+  }
+  
+  .recipe-info {
+    padding: 12px 14px 16px;
+  }
+  
+  .recipe-title {
+    font-size: 1rem;
+  }
+  
+  .recipe-prep {
+    font-size: 0.85rem;
+  }
+  
+  .difficulty-chip {
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    bottom: 10px;
+    right: 12px;
+  }
+  
+  .delete-recipe-btn {
+    padding: 10px;
+    font-size: 0.8rem;
+    bottom: 10px;
+    left: 12px;
+  }
+  
+  .add-card {
+    height: 260px;
+    font-size: 1.1rem;
+  }
+  
+  .modal-box {
+    max-width: 96%;
+    padding: 18px 14px;
+    border-radius: 12px;
+  }
+  
+  .modal-title {
+    font-size: 1.2rem;
+  }
+  
+  .modal-form input,
+  .modal-form textarea,
+  .modal-form select {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+  
+  .modal-save-btn {
+    padding: 11px;
+    font-size: 0.95rem;
+  }
+  
+  .modal-close-btn {
+    padding: 9px;
+    font-size: 0.9rem;
+  }
+  
+  .view-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  
+  .image-preview-wrap {
+    min-height: 160px;
+    padding: 14px;
+  }
+  
+  .view-steps {
+    min-height: 140px;
+  }
+  
+  .btn {
+    padding: 9px 12px;
+    font-size: 0.9rem;
+  }
+  
+  #toast {
+    bottom: 15px;
+    right: 15px;
+    left: 15px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+  
+  .delete-modal-box {
+    max-width: 300px;
+  }
+  
+  .app-footer {
+    margin-top: 40px;
+  }
+  
+  .requirements-link {
+    font-size: 0.9rem;
+  }
 }
 
-@media (max-width: 600px) {
-    #recipe-container {
-        grid-template-columns: 1fr;
-    }
+/* Very Small Devices */
+@media (max-width: 360px) {
+  .logo-text {
+    font-size: 1.1rem;
+  }
+  
+  .title-text {
+    font-size: 1.2rem;
+  }
+  
+  .recipe-title {
+    font-size: 0.95rem;
+  }
+  
+  .modal-title {
+    font-size: 1.1rem;
+  }
 }
 
