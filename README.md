@@ -77,7 +77,6 @@ MealByte-Recipe-Manager/
 </details>
 
 ## 🚀 Getting Started / How to Use?
-<details> <summary><strong>Click to expand</strong></summary>
 1. Navigate to <a href="https://nimish-go.github.io/ThinkSchool_RecipeManager_Assignment/">Here</a>.
 
 2. In the Homepage, you will see three preloaded recipes to show how will the recipes look after adding to the "localStorage".
@@ -118,10 +117,8 @@ MealByte-Recipe-Manager/
     - Click on the dropdown filter of *Filter By Difficulty* or *Max Prep Time*. You can  also filter recipes by selecting filter from both filters.
 
     - The *Filtered Recipe* will rendered.
-</details>
 
-<details><summary><strong>Click to Expand</strong></summary>
-##🗂️Data Structure in localStorage
+## 🗂️Data Structure in localStorage
 The recipes that are loaded on the Homepage are stored in "localStorage" under the key:
 ```
 recipes
@@ -148,10 +145,8 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
     "maxPrepTime": "15 mins"
 }
 ```
-</details>
 
-<details><summary><strong>Click to Expand</strong></summary>
-### 📝Notes
+**📝Notes**
 - An *image* has to be an **URL**.
 
 - *Steps* is numbered Object such as:
@@ -165,9 +160,7 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
 - *Id* is auto-generated.
 
 - Editing a Recipe, updates the existing recipe.
-</details>
 
-<details><summary><strong>Click to Expand</strong></summary>
 ## ⚙️Assumptions & Limitations
 
 - The app is offline-first.
@@ -181,9 +174,7 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
 - User is expected to input a valid image URL.
 
 - Grid automatically adjusts based on number of recipes.
-</details>
 
-<details><summary><strong>Click to Expand</strong></summary>
 ## 🐞Known Issues / Limitations
 
 **No validation for broken image URLs**
@@ -211,4 +202,3 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
     2: step
     3: step
     ```
-</details>
