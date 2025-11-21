@@ -84,6 +84,16 @@
 
     - After completing the "Edit", Click "Save" Button. After Saving, the recipe will get updated. Click on "Read More" Link once more to view your edits.
 
+6. **Search and Filter Functionality**
+    - Click on the Search bar, and search for a recipe by typing the recipe title.
+
+    - The *Searched Recipe* will Render.
+
+    - Click on the dropdown filter of *Filter By Difficulty* or *Max Prep Time*. You can  also filter recipes by selecting filter from both filters.
+
+    - The *Filtered Recipe* will rendered.
+
+
 ## Data Structure in localStorage
 The recipes that are loaded on the Homepage are stored in "localStorage" under the key:
 ```
@@ -125,7 +135,7 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
 
 - *Id* is auto-generated.
 
-- Editing a Recipe, updates the exiting recipe.
+- Editing a Recipe, updates the existing recipe.
 
 ## Assumptions & Limitations
 
@@ -143,23 +153,23 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
 
 ## Known Issues / Limitations
 
-# No validation for broken image URLs
+**No validation for broken image URLs**
 
     - If the URL is invalid, the card will show a broken image icon.
 
-# LocalStorage Size Limit
+**LocalStorage Size Limit**
 
     - Browsers typically allow 5–10MB, limiting large Base64 images.
 
-# No Pagination
+**No Pagination**
 
     - Large lists may require scrolling.
 
-# No Cloud Sync
+**No Cloud Sync**
 
     - Data does not sync between devices.
 
-# Steps require manual numbering in the Edit Modal
+**Steps require manual numbering in the Edit Modal**
 
     - They need to follow the format:
 
@@ -168,22 +178,3 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
     2: step
     3: step
     ```
-
-## Screenshots
-# HomePage
-![HomePage](assests/readme_screenshots/readmeimage.png)
-
-# Add another Recipe Button
-![Add Another Recipe Button](assets/readme_screenshots/addAnotherRecipe.png)
-
-# Add another Recipe Modal
-![Add Another Recipe Modal](assets/readme_screenshots/addAnotherRecipeModal.png)
-
-# To Save after Edit
-![To Save after edit](assets/readme_screenshots/toSaveAfterEdit.png)
-
-# Cooking up your recipe animation
-![Cooking up your recipe](assets/readme_screenshots/cookingUpAnimation.png)
-
-# Search Bar Functionality
-![Search Bar Functionality Image]()
