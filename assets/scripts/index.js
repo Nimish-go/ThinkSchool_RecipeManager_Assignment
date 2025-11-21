@@ -142,7 +142,12 @@ function renderRecipes() {
 
                 <div class="recipe-container-actions">
                     <a class="read-more" data-id="${recipe.id}">Read More</a>
-                    <button class="delete-recipe-btn" data-id="${recipe.id}">Delete Recipe</button>
+                    <button class="delete-recipe-btn" data-id="${recipe.id}" title="Delete Recipe">
+                        <div class="trash">
+                            <div class="lid"></div>
+                            <div class="bin"></div>
+                        </div>
+                    </button>
                 </div>
             </div>
         `;
@@ -247,11 +252,6 @@ addRecipeForm.addEventListener("submit", (event) => {
     if (hasError) return;
 
     showLoadingSpinner(); // spinner starts (5s)
-
-    if (!title || !description || !ingredientsInput || !stepsInput || !prepTime) {
-        console.error("Error. Input fields are empty.");
-        return;
-    }
 
     const ingredients = ingredientsInput
         .split(",")
@@ -601,11 +601,10 @@ function applyFilters() {
         "All": "All Recipes"
     };
 
-    // Update section title based on difficulty
     title.textContent = headings[diffVal];
 
     const container = document.getElementById("recipe-container");
-    container.innerHTML = "";
+    container.innerHTML = ""; // Clear all cards
 
     const filtered = recipes.filter(recipe => {
 
@@ -613,7 +612,6 @@ function applyFilters() {
         if (searchVal !== "") {
             const matchText =
                 `${recipe.title} ${recipe.description} ${recipe.ingredients.join(" ")}`.toLowerCase();
-
             if (!matchText.includes(searchVal)) return false;
         }
 
@@ -631,12 +629,22 @@ function applyFilters() {
         return true;
     });
 
-    // If no results — show "No recipes found"
+    // No results → show empty message
     if (filtered.length === 0) {
         container.innerHTML = `<p class="no-results">No recipes match your filters.</p>`;
+        
+        // Still add the Add-card so user can add new recipe
+        const addCard = document.createElement("div");
+        addCard.classList.add("add-card");
+        addCard.id = "open-add";
+        addCard.textContent = "+ Add another Recipe";
+        addCard.addEventListener("click", () => openModal('add'));
+        container.appendChild(addCard);
+
         return;
     }
 
+    // Render filtered recipes
     filtered.forEach(recipe => {
         const card = document.createElement("div");
         card.classList.add("recipe-card-ui");
@@ -646,8 +654,11 @@ function applyFilters() {
                 <img src="${recipe.image}" alt="${recipe.title}">
                 <div class="difficulty-container">
                     <span class="chip difficulty-chip" style="
-                        background:${recipe.difficulty === "Easy" ? "#38b000" : recipe.difficulty === "Medium" ? "#e4b61a" : "#ba181b"};
-                        color:white;">${recipe.difficulty}</span>
+                        background:${recipe.difficulty === "Easy" ? "#38b000" :
+                                    recipe.difficulty === "Medium" ? "#e4b61a" : "#ba181b"};
+                        color:white;">
+                        ${recipe.difficulty}
+                    </span>
                 </div>
             </div>
 
@@ -657,20 +668,34 @@ function applyFilters() {
 
                 <div class="recipe-container-actions">
                     <a class="read-more" data-id="${recipe.id}">Read More</a>
-                    <button class="delete-recipe-btn" data-id="${recipe.id}">
+
+                    <button class="delete-recipe-btn" data-id="${recipe.id}" title="Delete Recipe">
                         <div class="trash">
                             <div class="lid"></div>
                             <div class="bin"></div>
                         </div>
                     </button>
-
                 </div>
             </div>
         `;
 
         container.appendChild(card);
     });
+
+    /* ===================================
+       ⭐ ALWAYS append Add-Recipe card
+       =================================== */
+    const addCard = document.createElement("div");
+    addCard.classList.add("add-card");
+    addCard.id = "open-add";
+    addCard.textContent = "+ Add another Recipe";
+
+    // Reattach modal click
+    addCard.addEventListener("click", () => openModal('add'));
+
+    container.appendChild(addCard);
 }
+
 
 
 // live event listeners
