@@ -2,6 +2,30 @@
 
 # A clean, responsive Recipe Manager Web App built with HTML, CSS, and JavaScript, storing all data in the browser using localStorage.
 
+## 📁 Project Structure
+```
+MealByte-Recipe-Manager/
+│
+├── index.html                 # Main application UI
+├── README.md                  # Documentation
+│
+├── assets/
+│   ├── images/                # Recipe images + default placeholder
+│   │   ├── alfredo-pasta-1.jpeg
+│   │   ├── alfredo-pasta.jpeg
+│   │   ├── chicken-curry.jpeg
+│   │   ├── default.png
+│   │   └── egg_fried_rice.png
+│   │
+│   ├── scripts/
+│   │   └── index.js           # Application logic (CRUD, modals, filters, LS)
+│   │
+│   └── stylesheets/
+│       └── main.css           # Full styling (layout, animations, components)
+│
+
+```
+
 ## Features
 
 # Add Recipes
