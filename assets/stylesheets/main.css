@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Lora", serif;
 }
 
 /* Base & fonts */
@@ -26,7 +27,7 @@ body {
 /* ---------------- NAVBAR ---------------- */
 .primary-header {
     width: 100%;
-    background: #6c757d; /* chosen color */
+    background: #7a9e7e; /* chosen color */
     padding: 20px 20px;
     display: flex;
     justify-content: center;
@@ -652,4 +653,31 @@ body.modal-open {
     transform: translateY(-10px);
 }
 
+/** Lottie Files Spinner CSS */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    opacity: 0.8;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+#loading-text {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    color: #444;
+    font-weight: 600;
+}
 

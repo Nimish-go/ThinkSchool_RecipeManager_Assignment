@@ -26,11 +26,11 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
 })
 // simple prevent default submit (JS logic to persist will be added later)
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-  // UI-only: close modal after "save"
-    closeModal();
-});
+// form.addEventListener('submit', (e) => {
+//     e.preventDefault();
+//   // UI-only: close modal after "save"
+//     closeModal();
+// });
 
 /** Recipe Rendering and loading into localStorage */
 
@@ -124,7 +124,7 @@ function renderRecipes(filter = "All", search = "None") {
                     <span class="chip difficulty-chip" style="
                     background:${
                         (recipe.difficulty === "Easy") ? "#38b000": 
-                        (recipe.difficulty === "Medium") ? "#f5cc00" : "#ba181b"
+                        (recipe.difficulty === "Medium") ? "#eeba0b" : "#ba181b"
                     };
                     color: #fff;
                     ">${recipe.difficulty}</span>
@@ -146,49 +146,53 @@ function renderRecipes(filter = "All", search = "None") {
     });
 }
 
+function renderOnSearch(search){
+    
+}
+
 /** Add Recipe Modal */
 
 const addRecipeForm = document.querySelector(".modal-form");
 
-{/* <div id="recipe-modal" class="modal-overlay" aria-hidden="true">
-        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <h2 id="modal-title" class="modal-title">Add Recipe</h2>
+function showLoadingSpinner() {
+    const overlay = document.getElementById("loading-overlay");
+    const text = document.getElementById("loading-text");
 
-            <form class="modal-form" id="recipe-form" autocomplete="off">
-                <label for="title">Title</label>
-                <input id="title" name="title" type="text" placeholder="Recipe title">
+    // Tagline (you can change this)
+    text.textContent = "Cooking up your recipe...";
 
-                <label for="description">Description</label>
-                <textarea id="description" name="description" placeholder="Short description"></textarea>
+    overlay.style.display = "flex";
 
-                <label for="ingredients">Ingredients (comma-separated)</label>
-                <textarea id="ingredients" name="ingredients" placeholder="egg, flour, milk"></textarea>
+    // Hide after 5 seconds
+    setTimeout(() => {
+        overlay.style.display = "none";
+    }, 5000);
+}
 
-                <label for="steps">Steps</label>
-                <textarea id="steps" name="steps" placeholder="Step 1, Step 2..."></textarea>
+/* =====================================
+   ADD MODAL — IMAGE UPLOAD (BASE64)
+===================================== */
 
-                <label for="prep">Prep Time (mins)</label>
-                <input id="prep" name="prep" type="number" min="0" placeholder="e.g. 20">
+const addImageInput = document.getElementById("image-file");
+const addImagePreview = document.getElementById("add-image-preview");
+let addImageBase64 = "";   // store selected image as Base64
 
-                <label for="difficulty">Difficulty</label>
-                <select id="difficulty" name="difficulty">
-                    <option value="Easy">Easy</option>
-                    <option value="Medium" selected>Medium</option>
-                    <option value="Hard">Hard</option>
-                </select>
+addImageInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (!file) return;
 
-                <label for="image">Image URL (optional)</label>
-                <input id="image" name="image" type="text" placeholder="https://...">
-
-                <button type="submit" class="modal-save-btn">Save Recipe</button>
-            </form>
-
-            <button class="modal-close-btn" id="modal-close">Close</button>
-        </div>
-    </div> */}
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        addImageBase64 = e.target.result; // store Base64
+        addImagePreview.src = addImageBase64;
+    };
+    reader.readAsDataURL(file);
+});
 
 addRecipeForm.addEventListener("submit", (event) => {
     event.preventDefault();
+
+    showLoadingSpinner();
 
     // Form fields
     const title = document.getElementById("title").value.trim();
@@ -199,26 +203,34 @@ addRecipeForm.addEventListener("submit", (event) => {
     const difficulty = document.getElementById("difficulty").value;
     const imageURL = document.getElementById("image").value.trim();
 
-    // 1️⃣ VALIDATION — if any required field is empty
-    if (
-        !title ||
-        !description ||
-        !ingredientsInput ||
-        !stepsInput ||
-        !prepTime ||
-        !difficulty
-    ) {
-        alert("Error. Input fields are empty.");
+    console.log(title, description, ingredientsInput, stepsInput, prepTime, difficulty);
+
+    // VALIDATION
+    if (!title || !description || !ingredientsInput || !stepsInput || !prepTime) {
+        console.error("Error. Input fields are empty.");
         return;
     }
 
-    const ingredients = ingredientsInput.split(",").map(i => i.trim()).filter(i => i !== "");
+    // Parse ingredients
+    const ingredients = ingredientsInput
+        .split(",")
+        .map(i => i.trim())
+        .filter(i => i !== "");
 
-    const stepsArr = stepsInput.split(".").map(s => s.trim()).filter(s => s !== "");
+    // Parse steps into numbered object
+    const stepsArr = stepsInput
+        .split(".")
+        .map(s => s.trim())
+        .filter(s => s !== "");
+
     const stepsObj = {};
     stepsArr.forEach((step, index) => {
         stepsObj[index + 1] = step;
     });
+
+    // FINAL IMAGE:
+    // Priority: Base64 upload > Image URL > default placeholder
+    const finalImage = addImageBase64 || imageURL || "assets/images/default.png";
 
     const newRecipe = {
         id: now(),
@@ -228,29 +240,29 @@ addRecipeForm.addEventListener("submit", (event) => {
         steps: stepsObj,
         maxPrepTime: prepTime + " mins",
         difficulty,
-        image: imageURL
+        image: finalImage
     };
 
-    // Get existing recipes
+    // Save into localStorage
     let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
-
-    // Push new recipe
     recipes.push(newRecipe);
 
-    // Save back to localStorage
     localStorage.setItem("recipes", JSON.stringify(recipes));
 
-    // Re-render updated cards
+    // Re-render
     renderRecipes();
 
     // Close modal
     closeModal();
 
-    // Reset form
+    // Reset form fields
     addRecipeForm.reset();
+    addImagePreview.src = "assets/images/default.png";
+    addImageBase64 = "";
 
-    console.log("Recipe added!");
+    console.log("Recipe added successfully!");
 });
+
 
 /** View/Edit Modal */
 /* ---------- View/Edit Modal Logic (open, preview file instantly, edit/save) ---------- */
@@ -505,6 +517,100 @@ function showToast() {
         toast.classList.remove("show");
     }, 1800);
 }
+
+/* ================================
+   SEARCH + FILTER FUNCTIONALITY
+================================= */
+
+const searchInput = document.querySelector(".search");
+const difficultyFilter = document.querySelector(".difficulty-filter");
+const prepFilter = document.querySelector(".prep-filter");
+
+
+function applyFilters() {
+    let recipes = JSON.parse(localStorage.getItem("recipes")) || [];
+    const searchVal = searchInput.value.toLowerCase();
+    const diffVal = difficultyFilter.value;
+    const prepVal = prepFilter.value;
+    const title = document.querySelector(".section-title");
+
+    const headings = {
+        "Easy": "Easy Difficulty Recipes",
+        "Medium": "Medium Difficulty Recipes",
+        "Hard": "Hard Difficulty Recipes",
+        "All": "All Recipes"
+    };
+
+    // Update section title based on difficulty
+    title.textContent = headings[diffVal];
+
+    const container = document.getElementById("recipe-container");
+    container.innerHTML = "";
+
+    const filtered = recipes.filter(recipe => {
+
+        // ---------- SEARCH ----------
+        if (searchVal !== "") {
+            const matchText =
+                `${recipe.title} ${recipe.description} ${recipe.ingredients.join(" ")}`.toLowerCase();
+
+            if (!matchText.includes(searchVal)) return false;
+        }
+
+        // ---------- DIFFICULTY ----------
+        if (diffVal !== "All" && recipe.difficulty !== diffVal) {
+            return false;
+        }
+
+        // ---------- PREP TIME ----------
+        if (prepVal !== "All") {
+            const recipeTime = parseInt(recipe.maxPrepTime);
+            if (recipeTime > parseInt(prepVal)) return false;
+        }
+
+        return true;
+    });
+
+    // If no results — show "No recipes found"
+    if (filtered.length === 0) {
+        container.innerHTML = `<p class="no-results">No recipes match your filters.</p>`;
+        return;
+    }
+
+    filtered.forEach(recipe => {
+        const card = document.createElement("div");
+        card.classList.add("recipe-card-ui");
+
+        card.innerHTML = `
+            <div class="recipe-img">
+                <img src="${recipe.image}" alt="${recipe.title}">
+                <div class="difficulty-container">
+                    <span class="chip difficulty-chip" style="
+                        background:${recipe.difficulty === "Easy" ? "#38b000" : recipe.difficulty === "Medium" ? "#eeba0b" : "#ba181b"};
+                        color:white;">${recipe.difficulty}</span>
+                </div>
+            </div>
+
+            <div class="recipe-info">
+                <h3 class="recipe-title">${recipe.title}</h3>
+                <p class="recipe-prep">Max Prep Time: ${recipe.maxPrepTime}</p>
+
+                <div class="recipe-container-actions">
+                    <a class="read-more" data-id="${recipe.id}">Read More</a>
+                    <button class="delete-recipe-btn" data-id="${recipe.id}">Delete Recipe</button>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+
+// live event listeners
+searchInput.addEventListener("input", applyFilters);
+difficultyFilter.addEventListener("change", applyFilters);
+prepFilter.addEventListener("change", applyFilters);
 
 
 
