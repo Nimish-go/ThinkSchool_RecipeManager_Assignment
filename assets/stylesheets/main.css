@@ -636,6 +636,7 @@ body.modal-open {
     margin-top: 20px;
 }
 
+/* Button styling */
 .delete-recipe-btn {
     background: #c93a43;
     border: none;
@@ -653,16 +654,26 @@ body.modal-open {
     height: 22px;
 }
 
-/* Lid animation */
+/* LID pivot point */
 .trash-lid {
-    transform-origin: 12px 6px;   /* pivot = the hinge of the lid */
+    transform-origin: 12px 6px; /* hinge of the lid */
     transition: transform 0.25s ease;
 }
 
-/* Hover effect = lid opens */
+/* On hover: trigger bounce animation */
 .delete-recipe-btn:hover .trash-lid {
-    transform: rotate(-30deg);
+    animation: lidBounce 0.45s ease-out forwards;
 }
+
+/* Cute bounce-open animation */
+@keyframes lidBounce {
+    0%   { transform: rotate(0deg); }
+    40%  { transform: rotate(-32deg); } /* first jump */
+    65%  { transform: rotate(-22deg); } /* small recoil */
+    85%  { transform: rotate(-30deg); } /* settle */
+    100% { transform: rotate(-28deg); } /* final cute angle */
+}
+
 
 
 
