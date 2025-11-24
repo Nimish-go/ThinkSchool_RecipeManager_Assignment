@@ -71,42 +71,46 @@ MealByte-Recipe-Manager/
 - Add-recipe card stays aligned properly
 
 - Works on all screen sizes
-</details>
+
+**Categorized View of the recipes / Kanban Board**
+- Latest Update includes a *Kanban Board* View or you can say a categorized view of recipes.
+
+- You can drag and drop recipes from one category to another. Makes Editing of categories easier.
 
 ## 🚀 Getting Started / How to Use?
-1. Navigate to <a href="https://nimish-go.github.io/ThinkSchool_RecipeManager_Assignment/">Here</a>.
+1. Navigate to **<a href="https://nimish-go.github.io/ThinkSchool_RecipeManager_Assignment/">Here</a>**.
 
-2. In the Homepage, you will see three preloaded recipes to show how will the recipes look after adding to the "localStorage".
+2. In the Homepage, you will see three preloaded recipes to show how will the recipes look after adding to the **localStorage**.
 
-3. If you want to add another recipe, Click on the Add Another Recipe Container. By clicking this it will open a "Add Recipe" Modal.
+3. If you want to add another recipe, Click on the Add Another Recipe Container. By clicking this it will open a **Add Recipe** Modal.
 
 4. Add every detail as:
-    - Title : As it is in Text Format.
+    - *Title* : As it is in Text Format.
 
-    - Description : As it is in Text Format.
+    - *Description* : As it is in Text Format.
 
-    - Ingredients : Comma Seperated Text Format.
+    - *Ingredients* : Comma Seperated Text Format.
 
-    - Steps : Each Step on new line Text Format.
+    - *Steps* : Each Step on new line Text Format.
 
-    - Prep Time : Number Format.
+    - *Prep Time* : Number Format.
 
-    - Difficulty : Default selection is "Medium", but you can change as it is a dropdown selection.
+    - *Difficulty* : Default selection is **Medium**, but you can change as it is a dropdown selection.
 
-    - Image URL : This is optional. If not provided default image is provided for you. If you wish to *Add Image*, then go to **Google.com**. Search the dish name in the Images Tab. Right Click on an Image and say *Copy image address*.
+    - *Image URL* : This is optional. If not provided default image is provided for you. If you wish to *Add Image*, then go to **Google.com**. Search the dish name in the Images Tab. Right Click on an Image and say *Copy image address*.
 
     - After adding all details, click the **Save Button**, to save the data in *localStorage*.
 
 5. If you want to edit a certain recipe, follow the below steps:
     - Click on "Read More" Link on the recipe card which you wish to edit.
 
-    - After Clicking, a View / Edit Modal will appear. Scroll down in the modal and click the "Edit" Button.
+    - After Clicking, a View / Edit Modal will appear. Scroll down in the modal and click the *Edit* Button.
 
-    - After clicking the "Edit" Button, you will see the text fields have been activated. Edit the info you wish to edit.
+    - After clicking the *Edit* Button, you will see the text fields have been activated. Edit the info you wish to edit.
 
-    - After completing the "Edit", Click "Save" Button. After Saving, the recipe will get updated. Click on "Read More" Link once more to view your edits.
+    - After completing the *Edit*, Click *Save* Button. After Saving, the recipe will get updated. Click on *Read More* Link once more to view your edits.
 
-6. **Search and Filter Functionality**
+6. Search and Filter Functionality
     - Click on the Search bar, and search for a recipe by typing the recipe title.
 
     - The *Searched Recipe* will Render.
@@ -115,10 +119,21 @@ MealByte-Recipe-Manager/
 
     - The *Filtered Recipe* will rendered.
 
+## **(Updated)**
+7. Accessing Kanban Board
+    - Once navigating to the website, you will see the default view of how the recipes will look on the home page. Just below the navbar and above the Search Bar, there are 2 buttons from where we can switch between Default View and Kanban / Categorized View.
+
+    - Click the button with the title Kanban Board. You will be directed to the Kanban Board View.
+
+    - Over here, we can edit the recipe we wish by simply clicking on the recipe. The same view/ edit modal will appear once clicking. We can click *Edit* button in the modal and after the editing is done, we can save the edits by simply clicking the *Save* Button. Also if we want to just change the categories of a recipe, we can simply drag and drop it in different categories.
+
 ## 🗂️Data Structure in localStorage
-The recipes that are loaded on the Homepage are stored in "localStorage" under the key:
+The recipes that are loaded on the Homepage are stored in *localStorage* under the key:
+
 ```
+
 recipes
+
 ```
 
 The Structure of recipes is an **Array** of different **JSON** objects. A **JSON** Object Structure of an individual recipe looks like
