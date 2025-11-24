@@ -154,6 +154,7 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
         3: "Add cream + cheese.",
         4: "Mix pasta & season."
     },
+    "categories" : ["Lunch", "Dinner"],
     "difficulty": "Easy",
     "maxPrepTime": "15 mins"
 }
