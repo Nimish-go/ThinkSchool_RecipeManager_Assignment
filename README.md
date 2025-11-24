@@ -215,3 +215,6 @@ The Structure of recipes is an **Array** of different **JSON** objects. A **JSON
     2: step
     3: step
     ```
+
+**Change in Data**
+    - If there is any change in data like adding any other *key : value* pair to the recipes data, then we need to delete the recipes data from the *localStorage* and reload it with the new data.
