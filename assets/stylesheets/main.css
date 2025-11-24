@@ -1,3 +1,24 @@
+/* Dark Mode Presets */
+
+:root {
+    --bg: #C8D5B9;
+    --header-text: #000;
+    --card-bg: #52796F;
+    --card-text: #ffffff;
+    --text-main: #222;
+    --header-bg: #7A9E7E;
+    --toast-bg: #4F772D;
+    --toast-text: #ECF39E;
+    --addcard-bg: transparent;
+    --addcard-border: #31572C;
+    --addcard-text: #31572C;
+
+    --addcard-hover-bg: #31572C;
+    --addcard-hover-text: #FFFFFF;
+    --addcard-hover-border: #31572C;
+}
+
+
 /* Reset */
 * {
     margin: 0;
@@ -8,8 +29,8 @@
 
 /* Base & fonts */
 body {
-    background: #c8d5b9;
-    color: #222;
+    background: var(--bg);
+    color: var(--header-text);
     font-family: "Outfit", "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -27,7 +48,7 @@ body {
 /* ---------------- NAVBAR ---------------- */
 .primary-header {
     width: 100%;
-    background: #7a9e7e; /* chosen color */
+    background: var(--header-bg); /* chosen color */
     padding: 20px 20px;
     display: flex;
     justify-content: center;
@@ -106,7 +127,7 @@ body {
     font-family: "Lora", serif;
     font-size: 1.4rem;
     text-align: center;
-    color: #222;
+    color: var(--header-text);
 }
 
 /* ---------------- RECIPE GRID ---------------- */
@@ -146,12 +167,40 @@ body {
     width: 100%;
 }
 
+.category-chip {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    background: #C8D5B9;       /* chip background */
+    color: #31572C;            /* text color */
+    padding: 4px 10px;
+    border-radius: 18px;
+    border: 2px #52796F;  /* dashed border */
+    font-size: 0.8rem;
+    font-weight: 600;
+
+    z-index: 10;
+}
+
+.category-options label {
+    display: grid;
+    grid-template-columns: 30px auto;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.category-options input[type="checkbox"] {
+    margin: 0;
+}
+
 
 .recipe-card-ui {
     width: 290px;
     border-radius: 18px;
-    background: #52796f;
-    color: white;
+    background: var(--card-bg);
+    color: var(--card-text);
     overflow: hidden;
     box-shadow: 0px 10px 20px rgba(0,0,0,0.15);
     position: relative;
@@ -272,8 +321,9 @@ body {
     height: 300px;
     display: flex;
     border-radius: 14px;
-    border: 2px dashed #31572c;
-    color: #000000;
+    background: var(--addcard-bg);
+    border: 2px dashed var(--addcard-border);
+    color: var(--header-text);
     display: flex;
     margin-left: 1rem;
     margin-top: 1rem;
@@ -288,10 +338,10 @@ body {
 }
 
 .add-card:hover{
-    background: #31572c;
+    background:var(--addcard-hover-bg);
     color: #fff;
     transition: ease-in 0.2s all;
-    border: 2px solid #31572c;
+    border: 2px solid var(--addcard-hover-border);
 }
 
 /* Title + Add Recipe button row */
@@ -366,6 +416,7 @@ body {
     width: 92%;
     max-width: 640px;
     border-radius: 16px;
+    color: #000;
     padding: 26px 28px;
     box-shadow: 0 12px 34px rgba(0,0,0,0.28);
     animation: modalIn 200ms ease-out;
@@ -548,6 +599,7 @@ body.modal-open {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  color: #000;
 }
 
 /* labels + inputs */
@@ -749,6 +801,123 @@ body.modal-open {
     color: #444;
     font-weight: 600;
 }
+
+/* ---------------- TABS ---------------- */
+.tab-switch {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+    margin-bottom: 26px;
+}
+
+.tab-btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    background: #d8f3dc;
+    color: #000;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.tab-btn:hover {
+    background: #4F772D;
+    color: #fff;
+}
+
+.tab-btn.active {
+    background: #31572C;
+    color: white;
+}
+
+/* Hide inactive content */
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+
+
+/* ---------------- KANBAN BOARD ---------------- */
+.kanban-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: "Lora", serif;
+    font-size: 1.8rem;
+    color: var(--header-text);
+}
+
+.kanban-wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.kanban-column {
+    background: var(--card-bg);
+    color: var(--header-text);
+    border-radius: 12px;
+    padding: 14px;
+    min-height: 420px;
+}
+
+.kanban-column h3 {
+    text-align: center;
+    margin-bottom: 12px;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.kanban-list {
+    min-height: 350px;
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 10px;
+    border: 2px dashed #7A9E7E;
+}
+
+.kanban-card {
+    background: #5a8379;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    color: white;
+    cursor: grab;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+    transition: 0.2s ease;
+}
+
+.kanban-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+
+/* ---------------- COLORED TOAST ---------------- */
+#toast {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: var(--toast-bg);
+    color: var(--toast-text);
+    padding: 14px 18px;
+    border-radius: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s ease;
+    font-weight: 600;
+    border: 2px solid #31572C;
+}
+
+#toast.show {
+    opacity: 1;
+    transform: translateY(-12px);
+}
+
 
 /* ---------------- RESPONSIVE ---------------- */
 
@@ -1032,5 +1201,84 @@ body.modal-open {
   .modal-title {
     font-size: 1.1rem;
   }
+}
+
+
+/** Dark Mode */
+/* --- macOS style toggle --- */
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 58px;
+    height: 30px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+
+    inset: 0;
+    background: #d0d0d0;
+    border-radius: 34px;
+
+    transition: background 0.3s ease;
+}
+
+/* The round circle */
+.slider::before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+
+    left: 2px;
+    top: 2px;
+
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+/* Sun/Moon icons */
+.icon {
+    position: absolute;
+    font-size: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.sun {
+    left: 8px;
+}
+
+.moon {
+    right: 8px;
+}
+
+/* Checked (Dark Mode Enabled) */
+input:checked + .slider {
+    background: #4c6e5c;
+}
+
+input:checked + .slider::before {
+    transform: translateX(28px);
+}
+
+/* Fade icons in/out */
+input:not(:checked) + .slider .sun {
+    opacity: 1;
+}
+
+input:checked + .slider .moon {
+    opacity: 1;
 }
 

@@ -64,6 +64,7 @@ function loadLocalStorage(){
                 16: "After 1 min, chop some spring onion as well as coriander for garnish and add it in the kadhai.",
                 17: "Serve in a bowl and Enjoy your freshly homecooked Egg Fried Rice."
             },
+            "categories" : ["Lunch", "Dinner"],
             "difficulty": "Medium",
             "maxPrepTime": "10mins"
         },
@@ -81,6 +82,7 @@ function loadLocalStorage(){
                 3: "Add cream + cheese.",
                 4: "Mix pasta & season."
             },
+            "categories" : ["Dinner"],
             "difficulty": "Easy",
             "maxPrepTime": "15 mins"
         },
@@ -99,6 +101,7 @@ function loadLocalStorage(){
                 3: "Add tomato puree.",
                 4: "Simmer with spices."
             },
+            "categories" : ["Lunch", "Dinner"],
             "difficulty": "Hard",
             "maxPrepTime": "45 mins"
         }
@@ -125,6 +128,7 @@ function renderRecipes() {
         card.innerHTML = `
             <div class="recipe-img">
                 <img src="${recipe.image}" alt="${recipe.title}">
+
                 <div class="difficulty-container">
                     <span class="chip difficulty-chip" style="
                     background:${
@@ -138,6 +142,11 @@ function renderRecipes() {
 
             <div class="recipe-info">
                 <h3 class="recipe-title">${recipe.title}</h3>
+
+                <div class="category-chip">
+                    ${recipe.categories ? recipe.categories[0] : "Category"}
+                </div>
+
                 <p class="recipe-prep">Max Prep Time: ${recipe.maxPrepTime}</p>
 
                 <div class="recipe-container-actions">
@@ -241,6 +250,13 @@ addRecipeForm.addEventListener("submit", (event) => {
     const difficulty = document.getElementById("difficulty").value;
     const prepTime = document.getElementById("prep").value.trim();
     const imageURL = document.getElementById("image-url").value.trim();
+    const categoryNodes = document.querySelectorAll(".category-options input:checked");
+    const selectedCategories = [...categoryNodes].map(c => c.value);
+
+    if (selectedCategories.length === 0) {
+        showError("err-categories", "Select at least one category.");
+        hasError = true;
+    }
 
     if (!title) {
         showError("err-title", "Please enter a recipe title.");
@@ -292,6 +308,7 @@ addRecipeForm.addEventListener("submit", (event) => {
         ingredients,
         steps: stepsObj,
         maxPrepTime: prepTime + " mins",
+        categories : selectedCategories,
         difficulty,
         image: finalImage
     };
@@ -341,6 +358,7 @@ const viewImagePathEl = document.getElementById('view-image'); // if present ear
 const viewEditBtn = document.getElementById('view-edit-btn');
 const viewSaveBtn = document.getElementById('view-save-btn');
 const viewCloseBtn = document.getElementById('view-close-btn');
+const viewCategories = document.querySelectorAll('#edit-category-options input');
 
 let currentRecipeId = null;
 let latestSelectedFile = null;   // holds File object chosen in modal
@@ -356,6 +374,9 @@ function toggleViewFields(enable) {
     viewDifficultyEl.disabled = !enable;
     viewImageURLEl.disabled = !enable;
     // viewImageFileInput.disabled = !enable;
+    viewCategories.forEach(input => {
+        input.disabled = !enable;
+    });
 }
 
 // format steps object -> numbered lines "1: text\n2: text"
@@ -386,42 +407,48 @@ function parseStepsFromTextarea(txt) {
 
 // open view modal and populate fields
 function openRecipeViewModal(recipeId) {
-  const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
-  const recipe = recipes.find(r => String(r.id) === String(recipeId));
-  if (!recipe) return;
+    const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+    const recipe = recipes.find(r => String(r.id) === String(recipeId));
+    if (!recipe) return;
 
-  currentRecipeId = recipe.id;
-  latestPreviewDataUrl = null;
+    currentRecipeId = recipe.id;
+    latestPreviewDataUrl = null;
 
-  // Fill inputs
-  viewTitleEl.value = recipe.title || '';
-  viewDescriptionEl.value = recipe.description || '';
-  if (viewIngredientsEl)
-      viewIngredientsEl.value = Array.isArray(recipe.ingredients)
-          ? recipe.ingredients.join(', ')
-          : recipe.ingredients || '';
+    // Fill inputs
+    viewTitleEl.value = recipe.title || '';
+    viewDescriptionEl.value = recipe.description || '';
+    if (viewIngredientsEl)
+        viewIngredientsEl.value = Array.isArray(recipe.ingredients)
+            ? recipe.ingredients.join(', ')
+            : recipe.ingredients || '';
 
-  viewStepsEl.value = formatStepsForTextarea(recipe.steps || {});
-  viewPrepEl.value = recipe.maxPrepTime || '';
-  viewDifficultyEl.value = recipe.difficulty || '';
+    viewStepsEl.value = formatStepsForTextarea(recipe.steps || {});
+    viewPrepEl.value = recipe.maxPrepTime || '';
+    viewDifficultyEl.value = recipe.difficulty || '';
 
-  // 🔥 FIXED IMAGE PREVIEW
-  if (recipe.image && recipe.image.trim() !== "") {
-      viewImagePreview.src = recipe.image;
-  } else {
-      viewImagePreview.src = "assets/images/default.png";
-  }
+    document.querySelectorAll("#edit-category-options input").forEach(input => {
+        input.checked = recipe.categories && recipe.categories.includes(input.value);
+    });
 
-  // 🔥 FIXED IMAGE URL FIELD
-  document.getElementById("view-image-url").value = recipe.image || "";
+    // 🔥 FIXED IMAGE PREVIEW
+    if (recipe.image && recipe.image.trim() !== "") {
+        viewImagePreview.src = recipe.image;
+    } else {
+        viewImagePreview.src = "assets/images/default.png";
+    }
 
-  // Disable fields initially
-  toggleViewFields(false);
-  viewEditBtn.style.display = "inline-block";
-  viewSaveBtn.style.display = "none";
+    // 🔥 FIXED IMAGE URL FIELD
+    document.getElementById("view-image-url").value = recipe.image || "";
 
-  viewModalEl.style.display = "flex";
-  viewModalEl.setAttribute("aria-hidden", "false");
+    
+
+    // Disable fields initially
+    toggleViewFields(false);
+    viewEditBtn.style.display = "inline-block";
+    viewSaveBtn.style.display = "none";
+
+    viewModalEl.style.display = "flex";
+    viewModalEl.setAttribute("aria-hidden", "false");
 }
 
 // LIVE UPDATE IMAGE PREVIEW when URL changes
@@ -449,7 +476,6 @@ viewEditBtn.addEventListener('click', () => {
 
 // Save button -> write edits back to localStorage and re-render
 viewSaveBtn.addEventListener('click', () => {
-    // basic validation
     const title = viewTitleEl.value.trim();
     const description = viewDescriptionEl.value.trim();
     const stepsText = viewStepsEl.value.trim();
@@ -466,47 +492,35 @@ viewSaveBtn.addEventListener('click', () => {
     const idx = recipes.findIndex(r => String(r.id) === String(currentRecipeId));
     if (idx === -1) { alert('Recipe not found'); return; }
 
-    // Parse steps "1: text"
     const stepsObj = parseStepsFromTextarea(stepsText);
 
-    // DEFAULT: keep the OLD image
     let finalImage = recipes[idx].image;
+    if (imageUrl) finalImage = imageUrl;
 
-    // If user uploaded a new image file → use Base64
-    if (imageUrl) {
-        finalImage = imageUrl;  // Base64 data
-    }
+    // ⭐ NEW — categories
+    const updatedCategories = [...document.querySelectorAll("#edit-category-options input:checked")]
+        .map(c => c.value);
 
-    // update recipe values
+    // Update recipe object
     recipes[idx].title = title;
     recipes[idx].description = description;
-    recipes[idx].ingredients = (
-        viewIngredientsEl
-            ? viewIngredientsEl.value.split(',').map(s => s.trim()).filter(Boolean)
-            : recipes[idx].ingredients
-    );
-    
+    recipes[idx].ingredients = viewIngredientsEl
+        ? viewIngredientsEl.value.split(',').map(s => s.trim()).filter(Boolean)
+        : recipes[idx].ingredients;
+
     recipes[idx].steps = stepsObj;
     recipes[idx].maxPrepTime = prep;
     recipes[idx].difficulty = difficulty;
-    recipes[idx].image = finalImage;   // ✔ Important: only use finalImage
+    recipes[idx].image = finalImage;
+    recipes[idx].categories = updatedCategories;  // ⭐ added
 
-    // Save back to localStorage
     localStorage.setItem('recipes', JSON.stringify(recipes));
 
     showLoadingSpinner();
-
-    // Update UI
-    if (typeof renderRecipes === 'function') renderRecipes();
-
-    // Close modal
-    viewModalEl.style.display = 'none';
-    viewModalEl.setAttribute('aria-hidden','true');
-
-    // Reset
-    latestSelectedFile = null;
-    latestPreviewDataUrl = null;
+    renderRecipes();
+    viewModalEl.style.display = "none";
 });
+
 
 
 // close modal
@@ -535,11 +549,14 @@ let deleteRecipeId = null;
 
 // When clicking delete button on card
 document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("delete-recipe-btn")) {
-        deleteRecipeId = e.target.getAttribute("data-id");
+    const btn = e.target.closest(".delete-recipe-btn");
+
+    if (btn) {
+        deleteRecipeId = btn.getAttribute("data-id");
         document.getElementById("delete-modal").style.display = "flex";
     }
 });
+
 
 // Cancel delete
 document.getElementById("cancel-delete").addEventListener("click", () => {
@@ -667,6 +684,7 @@ function applyFilters() {
         card.innerHTML = `
             <div class="recipe-img">
                 <img src="${recipe.image}" alt="${recipe.title}">
+
                 <div class="difficulty-container">
                     <span class="chip difficulty-chip" style="
                         background:${recipe.difficulty === "Easy" ? "#38b000" :
@@ -679,6 +697,11 @@ function applyFilters() {
 
             <div class="recipe-info">
                 <h3 class="recipe-title">${recipe.title}</h3>
+
+                <div class="category-chip">
+                    ${recipe.categories ? recipe.categories[0] : "Category"}
+                </div>
+
                 <p class="recipe-prep">Max Prep Time: ${recipe.maxPrepTime}</p>
 
                 <div class="recipe-container-actions">

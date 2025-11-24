@@ -25,21 +25,29 @@
 
     <main class="container">
 
+        <div class="tab-switch">
+            <button class="tab-btn active" data-tab="recipes-view">Recipe Card View (Default)</button>
+            <button class="tab-btn" data-tab="kanban-view">Category View</button>
+        </div>
+
         <!-- Title + Search + Filters -->
+        <section id="recipes-view" class="tab-content active">
+
         <div class="title-search-filters">
             <h3 class="title-text">Your Recipes</h3>
 
             <div class="search-filter-group">
                 <input type="search" class="search" placeholder="Search" autocomplete="recipes">
-                <select class="difficulty-filter" aria-label="Filter by difficulty">
-                    <option value="All">Filter By Difficulty</option>
+
+                <select class="difficulty-filter">
+                    <option value="All">Difficulty</option>
                     <option value="Easy">Easy</option>
                     <option value="Medium">Medium</option>
                     <option value="Hard">Hard</option>
                 </select>
 
-                <select class="prep-filter" aria-label="Filter by prep time">
-                    <option value="All">Max Prep Time</option>
+                <select class="prep-filter">
+                    <option value="All">Prep Time</option>
                     <option value="10">10 mins</option>
                     <option value="20">20 mins</option>
                     <option value="30">30 mins</option>
@@ -48,23 +56,53 @@
             </div>
         </div>
 
-        <!-- Section Title -->
         <div class="title-row">
             <h4 class="section-title">All Recipes</h4>
         </div>
 
-
-        <!-- Cards Container -->
+        <!-- Cards -->
         <div id="cards" class="recipe-grid">
             <div id="recipe-container">
 
-                <!-- Add Button MUST be here -->
                 <div class="add-card" id="open-add">
                     + Add another Recipe
                 </div>
 
             </div>
         </div>
+
+    </section>
+
+    <!-- ---------------- KANBAN BOARD VIEW ---------------- -->
+    <section id="kanban-view" class="tab-content">
+
+        <h2 class="kanban-title">Category View (Kanban Style)</h2>
+
+        <div class="kanban-wrapper">
+
+            <div class="kanban-column" data-category="Breakfast">
+                <h3>Breakfast</h3>
+                <div class="kanban-list"></div>
+            </div>
+
+            <div class="kanban-column" data-category="Lunch">
+                <h3>Lunch</h3>
+                <div class="kanban-list"></div>
+            </div>
+
+            <div class="kanban-column" data-category="Dinner">
+                <h3>Dinner</h3>
+                <div class="kanban-list"></div>
+            </div>
+
+            <div class="kanban-column" data-category="Snacks">
+                <h3>Snacks</h3>
+                <div class="kanban-list"></div>
+            </div>
+
+        </div>
+
+    </section>
 
 
         <!-- Link to the assessment PDF (local path provided) -->
@@ -94,6 +132,17 @@
                 <label for="steps">Steps (one per line)</label>
                 <textarea id="steps" name="steps" placeholder="Step 1, Step 2..."></textarea>
                 <span class="error-msg" id="err-steps"></span>
+
+                <label>Categories</label>
+                <div id="edit-category-options" class="category-options">
+                    <label><input type="checkbox" value="Breakfast"> Breakfast</label>
+                    <label><input type="checkbox" value="Lunch"> Lunch</label>
+                    <label><input type="checkbox" value="Dinner"> Dinner</label>
+                    <label><input type="checkbox" value="Snacks"> Snacks</label>
+                </div>
+
+
+                <span class="error-msg" id="err-categories"></span>
 
                 <label for="prep">Prep Time (mins)</label>
                 <input id="prep" name="prep" type="number" min="0" placeholder="e.g. 20">
@@ -154,6 +203,14 @@
             <option>Medium</option>
             <option>Hard</option>
             </select>
+
+            <label>Categories</label>
+            <div class="category-options" id="edit-category-options">
+                <label><input type="checkbox" value="Breakfast" disabled> Breakfast</label>
+                <label><input type="checkbox" value="Lunch" disabled> Lunch</label>
+                <label><input type="checkbox" value="Dinner" disabled> Dinner</label>
+                <label><input type="checkbox" value="Snacks" disabled> Snacks</label>
+            </div>
 
             <label class="view-label">Image URL</label>
             <input id="view-image-url" type="text" class="view-input" disabled>
@@ -217,5 +274,7 @@
         src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.5/dist/dotlottie-wc.js"
         type="module"
     ></script>
+    <script src="assets/scripts/kanban.js"></script>
+    <script src="assets/scripts/theme.js"></script>
 </body>
 </html>
