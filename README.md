@@ -72,7 +72,8 @@ MealByte-Recipe-Manager/
 
 - Works on all screen sizes
 
-**Categorized View of the recipes / Kanban Board**
+### **(Updated)**
+**📊Categorized View of the recipes / Kanban Board**
 - Latest Update includes a *Kanban Board* View or you can say a categorized view of recipes.
 
 - You can drag and drop recipes from one category to another. Makes Editing of categories easier.
@@ -119,7 +120,7 @@ MealByte-Recipe-Manager/
 
     - The *Filtered Recipe* will rendered.
 
-## **(Updated)**
+### **(Updated)**
 7. Accessing Kanban Board
     - Once navigating to the website, you will see the default view of how the recipes will look on the home page. Just below the navbar and above the Search Bar, there are 2 buttons from where we can switch between Default View and Kanban / Categorized View.
 
